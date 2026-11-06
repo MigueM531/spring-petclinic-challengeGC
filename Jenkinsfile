@@ -28,7 +28,7 @@ pipeline {
             usernameVariable: 'DOCKER_USER',
             passwordVariable: 'DOCKER_PASS'
         )]) {
-	    sh 'docker logout || true'
+	    sh 'rm -rf ~/.docker/config.json'
             sh 'echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin'
             sh 'docker push miguem531/spring-petclinic:gestion-udem-jenkins'
         }
