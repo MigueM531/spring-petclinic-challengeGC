@@ -21,16 +21,11 @@ pipeline {
       }
     }
     stage('Docker Push') {
-    agent any
-    steps {
-        withCredentials([usernamePassword(
-            credentialsId: 'dockerHub',
-            usernameVariable: 'DOCKER_USER',
-            passwordVariable: 'DOCKER_PASS'
-        )]) {
-	    sh 'rm -rf ~/.docker/config.json'
-            sh 'echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin'
-            sh 'docker push miguem531/spring-petclinic:gestion-udem-jenkins'
+      agent any
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
+          sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
+          sh 'docker push miguem531/spring-petclinic:gestion-udem-jenkins"
         }
       }
     }
